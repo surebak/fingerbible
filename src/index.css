@@ -1,0 +1,451 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'fingerbible';
+  src: url('/font/fingerbible.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+  font-family: "fingerbible";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1em;
+  margin-left: .2em;
+}
+
+.icon-facebook:before {
+  content: '\e800';
+}
+
+.icon-twitter:before {
+  content: '\e801';
+}
+
+.icon-comment:before {
+  content: '\e802';
+}
+
+.icon-finger:before {
+  content: '\e803';
+}
+
+.icon-t_1:before {
+  content: '\e804';
+}
+
+.icon-t_2:before {
+  content: '\e805';
+}
+
+.icon-t_3:before {
+  content: '\e806';
+}
+
+.icon-t_4:before {
+  content: '\e807';
+}
+
+.icon-t_5:before {
+  content: '\e808';
+}
+
+.icon-t_6:before {
+  content: '\e809';
+}
+
+.icon-t_7:before {
+  content: '\e80a';
+}
+
+.icon-t_8:before {
+  content: '\e80b';
+}
+
+/* Legacy Variables */
+:root {
+  --color-scheme: #ff0044;
+}
+
+/* Base Reset */
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+code,
+legend,
+button,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: black;
+  color: white;
+  top: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+body * {
+  padding: 0;
+  list-style: none;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+/* Layout */
+.wrapper {
+  overflow-y: auto;
+  overflow-x: hidden;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  position: absolute;
+  padding: 3.5em 0 1em 0;
+}
+
+.main {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: #222;
+  transition: 0.2s;
+  z-index: 10;
+  box-shadow: 0 0 10px black;
+  -webkit-overflow-scrolling: touch;
+}
+
+.bright .main {
+  background: white;
+  color: black;
+  box-shadow: 0 0 16px rgba(0, 0, 0, .2);
+}
+
+.right_open .main {
+  transform: translate3d(-8em, 0, 0);
+}
+
+.left_open .main {
+  transform: translate3d(14em, 0, 0);
+}
+
+/* Header */
+header {
+  background: rgba(0, 0, 0, .75);
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 15;
+  transition: 0.2s;
+  height: 50px;
+}
+
+.bright header {
+  background: rgba(255, 255, 255, .8);
+  color: black;
+}
+
+.right_open header {
+  transform: translate3d(-8em, 0, 0);
+}
+
+.left_open header {
+  transform: translate3d(14em, 0, 0);
+}
+
+header .btn {
+  width: 50px;
+  height: 50px;
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+/* Hamburger Icon (Left) */
+.btn.left:after,
+.btn.left:before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  position: absolute;
+  left: 50%;
+  background: var(--color-scheme);
+  top: 50%;
+  margin-left: -2.5px;
+  margin-top: -2.5px;
+  transform: translate3d(4px, 4px, 0);
+  transition: 0.5s;
+}
+
+.left_open .btn.left:after,
+.left_open .btn.left:before {
+  transform: rotate(45deg);
+  width: 20px;
+  height: 1px;
+  margin-top: 0;
+  margin-left: -10px;
+}
+
+.left_open .btn.left:after {
+  transform: rotate(-45deg);
+}
+
+.btn.left:after {
+  transform: translate3d(-4px, -4px, 0);
+}
+
+/* Settings Icon (Right) */
+.btn.right svg {
+  fill: var(--color-scheme);
+  padding: 15px;
+  width: 100%;
+  height: 100%;
+}
+
+header .title {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+  padding-left: 10px;
+}
+
+
+/* Left Sidebar: Books */
+.books {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #000000 !important;
+  color: #ffffff !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 0;
+  width: 8em;
+}
+
+.bright .books {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+}
+
+.books>div {
+  padding: 0 12px;
+  border-bottom: 1px solid #222;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  position: relative;
+  cursor: pointer;
+  color: inherit !important;
+}
+
+.bright .books>div {
+  border-bottom-color: #eee;
+  color: inherit !important;
+}
+
+.books>div.selected {
+  background-color: #333333 !important;
+}
+
+.bright .books>div.selected {
+  background-color: #dddddd !important;
+}
+
+
+/* Left Sidebar: Chapters (Drawer) */
+.chapters {
+  position: fixed;
+  left: 8em;
+  top: 0;
+  bottom: 0;
+  right: 6em;
+  background-color: #333333 !important;
+  color: #ffffff !important;
+  z-index: 2;
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: 0.2s;
+  box-shadow: 0 0 10px black;
+  transform: translate3d(-100%, 0, 0);
+  /* Hidden by default */
+}
+
+/* When c_reading class is active, chapters drawer slides out */
+.c_reading .chapters {
+  transform: translate3d(0, 0, 0);
+}
+
+.bright .chapters {
+  background-color: #dddddd !important;
+  color: #000000 !important;
+  box-shadow: 0 0 16px rgba(0, 0, 0, .2);
+}
+
+.chapters li {
+  padding: 0 12px;
+  border-bottom: 1px solid #444;
+  display: flex;
+  height: 40px;
+  align-items: center;
+  cursor: pointer;
+  color: inherit !important;
+}
+
+.bright .chapters li {
+  border-bottom-color: #bbb;
+  color: inherit !important;
+}
+
+.chapters li.selected {
+  background-color: #444444 !important;
+}
+
+.bright .chapters li.selected {
+  background-color: #eeeeee !important;
+}
+
+
+/* Right Sidebar: Config */
+.config {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 8em;
+  background: #444;
+  z-index: 2;
+  color: white;
+}
+
+.bright .config {
+  background: #ddd;
+  color: black;
+}
+
+.config li {
+  padding: 10px 16px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+}
+
+.bright .config li {
+  border-color: #bbb;
+}
+
+.config li#current select {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1em;
+  width: 100%;
+  margin-top: 5px;
+}
+
+.bright .config li#current select {
+  color: black;
+}
+
+
+/* Text Content */
+.text>div {
+  padding: 2px 16px 6px;
+}
+
+.text>div span {
+  color: var(--color-scheme);
+  font-size: .8em;
+  margin: 0 .5em 0 0;
+  font-weight: bold;
+}
+
+.text>div p {
+  display: inline;
+  line-height: 1.6;
+}
+
+.text>div.on {
+  background: #333;
+}
+
+.bright .text>div.on {
+  background: #ddd;
+}
+
+/* Loading */
+.block_loading {
+  visibility: hidden;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.8);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  transition: 0.2s;
+  pointer-events: none;
+}
+
+.loading .block_loading {
+  visibility: visible;
+  opacity: 1;
+}
+
+.bright .block_loading {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.block_loading i {
+  color: var(--color-scheme);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -42px;
+  font-size: 5em;
+  margin-left: -53px;
+  /* Animations omitted for brevity, can add back if needed */
+}
