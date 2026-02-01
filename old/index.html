@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>손가락 성경</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="새번역, 새번역성경, 개역개정,개역개정성경,온라인성경,인터넷개역개정,성경,바이블,한글성경,모바일,모아빌웹,온라인,웹앱,webapp,PWA" />
+    <meta name="description" content="모바일기기 스마트폰 등에서 편리하게 볼 수 있는 온라인 한글 개역개정/새번역 성경입니다." />
+    <meta property="og:url" content="www.fingerbible.com" />
+    <meta property="fb:app_id" content="1522654831340442" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="손가락성경" />
+    <meta property="og:see_also" content="www.fingerbible.com" />
+    <meta property="og:image" content="http://fingerbible.com/ogimg.png" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/fingerbible.css">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="apple_icon.png">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.3.0/firebase-database.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@1/dist/clipboard.min.js"></script>
+    <script>
+    (function(i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function() {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    ga('create', 'UA-57744362-1', 'auto');
+    ga('send', 'pageview');
+    </script>
+</head>
+
+<body class='c_reading' data-version="krv">
+    <div class="block_loading">
+        <i class="icon-t_1"></i>
+        <i class="icon-t_2"></i>
+        <i class="icon-t_3"></i>
+        <i class="icon-t_4"></i>
+        <i class="icon-t_5"></i>
+        <i class="icon-t_6"></i>
+        <i class="icon-t_7"></i>
+        <i class="icon-t_8"></i>
+    </div>
+    <div class="float">
+        <div class="close"></div>
+        <p class="selection"></p>
+        <div class="copy_me" data-clipboard-target="#copyme">복사하기</div>
+    </div>
+    <div class="books">
+        <div class="selected" data-ch='50' data-book="gen">창세기</div>
+        <div data-ch='40' data-book="exo">출애굽기</div>
+        <div data-ch='27' data-book="lev">레위기</div>
+        <div data-ch='36' data-book="num">민수기</div>
+        <div data-ch='34' data-book="deut">신명기</div>
+        <div data-ch='24' data-book="jos">여호수아</div>
+        <div data-ch='21' data-book="jdg">사사기</div>
+        <div data-ch='4' data-book="rth">룻기</div>
+        <div data-ch='31' data-book="1sam">사무엘상</div>
+        <div data-ch='24' data-book="2sam">사무엘하</div>
+        <div data-ch='22' data-book="1kgs">열왕기상</div>
+        <div data-ch='25' data-book="2kgs">열왕기하</div>
+        <div data-ch='29' data-book="1chr">역대상</div>
+        <div data-ch='36' data-book="2chr">역대하</div>
+        <div data-ch='10' data-book="ezr">에스라</div>
+        <div data-ch='13' data-book="neh">느헤미야</div>
+        <div data-ch='10' data-book="esth">에스더</div>
+        <div data-ch='42' data-book="job">욥기</div>
+        <div data-ch='150' data-book="psm">시편</div>
+        <div data-ch='31' data-book="prv">잠언</div>
+        <div data-ch='12' data-book="ecc">전도서</div>
+        <div data-ch='8' data-book="song">아가</div>
+        <div data-ch='66' data-book="isa">이사야</div>
+        <div data-ch='52' data-book="jer">예레미야</div>
+        <div data-ch='5' data-book="lam">예레미야 애가</div>
+        <div data-ch='48' data-book="ezk">에스겔</div>
+        <div data-ch='12' data-book="dan">다니엘</div>
+        <div data-ch='14' data-book="hos">호세아</div>
+        <div data-ch='3' data-book="joel">요엘</div>
+        <div data-ch='9' data-book="amos">아모스</div>
+        <div data-ch='1' data-book="obad">오바댜</div>
+        <div data-ch='4' data-book="jon">요나</div>
+        <div data-ch='7' data-book="mic">미가</div>
+        <div data-ch='3' data-book="nah">나훔</div>
+        <div data-ch='3' data-book="hab">하박국</div>
+        <div data-ch='3' data-book="zep">스바냐</div>
+        <div data-ch='2' data-book="hag">학개</div>
+        <div data-ch='14' data-book="zec">스가랴</div>
+        <div data-ch='4' data-book="mal">말라기</div>
+        <div data-ch='28' data-book="mat">마태복음</div>
+        <div data-ch='16' data-book="mrk">마가복음</div>
+        <div data-ch='24' data-book="luk">누가복음</div>
+        <div data-ch='21' data-book="john">요한복음</div>
+        <div data-ch='28' data-book="acts">사도행전</div>
+        <div data-ch='16' data-book="rom">로마서</div>
+        <div data-ch='16' data-book="1cor">고린도전서</div>
+        <div data-ch='13' data-book="2cor">고린도후서</div>
+        <div data-ch='6' data-book="gal">갈라디아서</div>
+        <div data-ch='6' data-book="eph">에베소서</div>
+        <div data-ch='4' data-book="phil">빌립보서</div>
+        <div data-ch='4' data-book="col">골로새서</div>
+        <div data-ch='5' data-book="1the">데살로니가전서</div>
+        <div data-ch='3' data-book="2the">데살로니가후서</div>
+        <div data-ch='6' data-book="1tim">디모데전서</div>
+        <div data-ch='4' data-book="2tim">디모데후서</div>
+        <div data-ch='3' data-book="tit">디도서</div>
+        <div data-ch='1' data-book="phm">빌레몬서</div>
+        <div data-ch='13' data-book="heb">히브리서</div>
+        <div data-ch='5' data-book="jas">야고보서</div>
+        <div data-ch='5' data-book="1pet">베드로전서</div>
+        <div data-ch='3' data-book="2pet">베드로후서</div>
+        <div data-ch='5' data-book="1jn">요한일서</div>
+        <div data-ch='1' data-book="2jn">요한이서</div>
+        <div data-ch='1' data-book="3jn">요한삼서</div>
+        <div data-ch='1' data-book="jud">유다서</div>
+        <div data-ch='22' data-book="rev">요한계시록</div>
+    </div>
+    <div class="chapters"></div>
+    <div class="config">
+        <li id="current">
+            <p>읽기</p>
+            <select>
+                <option value="krv">개역개정</option>
+                <option value="rnksv" selected="selected">새번역</option>
+            </select>
+        </li>
+        <li id="font_inc">글씨 +</li>
+        <li id="font_dec">글씨 -</li>
+        <li id="inline">줄바꿈</li>
+        <li id="colormode">색채</li>
+    </div>
+    <header>
+        <div class="btn left"></div>
+        <div class="title"></div>
+        <div class="btn right">
+            <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 478.703 478.703" style="enable-background:new 0 0 478.703 478.703;" xml:space="preserve">
+                <path d="M454.2,189.101l-33.6-5.7c-3.5-11.3-8-22.2-13.5-32.6l19.8-27.7c8.4-11.8,7.1-27.9-3.2-38.1l-29.8-29.8
+            c-5.6-5.6-13-8.7-20.9-8.7c-6.2,0-12.1,1.9-17.1,5.5l-27.8,19.8c-10.8-5.7-22.1-10.4-33.8-13.9l-5.6-33.2
+            c-2.4-14.3-14.7-24.7-29.2-24.7h-42.1c-14.5,0-26.8,10.4-29.2,24.7l-5.8,34c-11.2,3.5-22.1,8.1-32.5,13.7l-27.5-19.8
+            c-5-3.6-11-5.5-17.2-5.5c-7.9,0-15.4,3.1-20.9,8.7l-29.9,29.8c-10.2,10.2-11.6,26.3-3.2,38.1l20,28.1
+            c-5.5,10.5-9.9,21.4-13.3,32.7l-33.2,5.6c-14.3,2.4-24.7,14.7-24.7,29.2v42.1c0,14.5,10.4,26.8,24.7,29.2l34,5.8
+            c3.5,11.2,8.1,22.1,13.7,32.5l-19.7,27.4c-8.4,11.8-7.1,27.9,3.2,38.1l29.8,29.8c5.6,5.6,13,8.7,20.9,8.7c6.2,0,12.1-1.9,17.1-5.5
+            l28.1-20c10.1,5.3,20.7,9.6,31.6,13l5.6,33.6c2.4,14.3,14.7,24.7,29.2,24.7h42.2c14.5,0,26.8-10.4,29.2-24.7l5.7-33.6
+            c11.3-3.5,22.2-8,32.6-13.5l27.7,19.8c5,3.6,11,5.5,17.2,5.5l0,0c7.9,0,15.3-3.1,20.9-8.7l29.8-29.8c10.2-10.2,11.6-26.3,3.2-38.1
+            l-19.8-27.8c5.5-10.5,10.1-21.4,13.5-32.6l33.6-5.6c14.3-2.4,24.7-14.7,24.7-29.2v-42.1
+            C478.9,203.801,468.5,191.501,454.2,189.101z M451.9,260.401c0,1.3-0.9,2.4-2.2,2.6l-42,7c-5.3,0.9-9.5,4.8-10.8,9.9
+            c-3.8,14.7-9.6,28.8-17.4,41.9c-2.7,4.6-2.5,10.3,0.6,14.7l24.7,34.8c0.7,1,0.6,2.5-0.3,3.4l-29.8,29.8c-0.7,0.7-1.4,0.8-1.9,0.8
+            c-0.6,0-1.1-0.2-1.5-0.5l-34.7-24.7c-4.3-3.1-10.1-3.3-14.7-0.6c-13.1,7.8-27.2,13.6-41.9,17.4c-5.2,1.3-9.1,5.6-9.9,10.8l-7.1,42
+            c-0.2,1.3-1.3,2.2-2.6,2.2h-42.1c-1.3,0-2.4-0.9-2.6-2.2l-7-42c-0.9-5.3-4.8-9.5-9.9-10.8c-14.3-3.7-28.1-9.4-41-16.8
+            c-2.1-1.2-4.5-1.8-6.8-1.8c-2.7,0-5.5,0.8-7.8,2.5l-35,24.9c-0.5,0.3-1,0.5-1.5,0.5c-0.4,0-1.2-0.1-1.9-0.8l-29.8-29.8
+            c-0.9-0.9-1-2.3-0.3-3.4l24.6-34.5c3.1-4.4,3.3-10.2,0.6-14.8c-7.8-13-13.8-27.1-17.6-41.8c-1.4-5.1-5.6-9-10.8-9.9l-42.3-7.2
+            c-1.3-0.2-2.2-1.3-2.2-2.6v-42.1c0-1.3,0.9-2.4,2.2-2.6l41.7-7c5.3-0.9,9.6-4.8,10.9-10c3.7-14.7,9.4-28.9,17.1-42
+            c2.7-4.6,2.4-10.3-0.7-14.6l-24.9-35c-0.7-1-0.6-2.5,0.3-3.4l29.8-29.8c0.7-0.7,1.4-0.8,1.9-0.8c0.6,0,1.1,0.2,1.5,0.5l34.5,24.6
+            c4.4,3.1,10.2,3.3,14.8,0.6c13-7.8,27.1-13.8,41.8-17.6c5.1-1.4,9-5.6,9.9-10.8l7.2-42.3c0.2-1.3,1.3-2.2,2.6-2.2h42.1
+            c1.3,0,2.4,0.9,2.6,2.2l7,41.7c0.9,5.3,4.8,9.6,10,10.9c15.1,3.8,29.5,9.7,42.9,17.6c4.6,2.7,10.3,2.5,14.7-0.6l34.5-24.8
+            c0.5-0.3,1-0.5,1.5-0.5c0.4,0,1.2,0.1,1.9,0.8l29.8,29.8c0.9,0.9,1,2.3,0.3,3.4l-24.7,34.7c-3.1,4.3-3.3,10.1-0.6,14.7
+            c7.8,13.1,13.6,27.2,17.4,41.9c1.3,5.2,5.6,9.1,10.8,9.9l42,7.1c1.3,0.2,2.2,1.3,2.2,2.6v42.1H451.9z" />
+                <path d="M239.4,136.001c-57,0-103.3,46.3-103.3,103.3s46.3,103.3,103.3,103.3s103.3-46.3,103.3-103.3S296.4,136.001,239.4,136.001
+            z M239.4,315.601c-42.1,0-76.3-34.2-76.3-76.3s34.2-76.3,76.3-76.3s76.3,34.2,76.3,76.3S281.5,315.601,239.4,315.601z" />
+            </svg>
+        </div>
+    </header>
+    <div class="main">
+        <div class="wrapper" id="b_text">
+            <div class="text">
+                <div v-for="(value,key,index) in bjson"><span>{{key}}</span>
+                    <p>{{value}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input id="copyme" style="position: absolute;left: -999px;top:-999px;opacity: 0;z-index: -1;pointer-events: none" type="text" value=''>
+</body>
+<script>
+var config = {
+    databaseURL: "https://bibles-da0c4.firebaseio.com/",
+};
+firebase.initializeApp(config);
+
+var database = firebase.database();
+
+var version = 'rnksv'
+var book = 'gen'
+var chapter = 1;
+var l_chapter = 0;
+var book_title = ''
+var bible_json
+
+function read_once() {
+    $('body').addClass('loading')
+
+    firebase.database().ref('/' + version + '/' + book + '/c' + chapter).once('value').then(function(snapshot) {
+        bible_json = snapshot.val()
+        rmv_letter(bible_json)
+        $('body').removeClass('loading')
+    })
+    book_title = $('.books').find('[data-book="' + book + '"]').text()
+    $('.title').text(book_title + ' ' + chapter + '장')
+    if (!$('body').hasClass('left_open')) {
+        var t_h = $('.books > div.selected').offset().top - $(window).height() / 2 + $('.books > div').height() / 2
+        $('.books').scrollTop(t_h)
+        t_h = $('.chapters > li.selected').offset().top - $(window).height() / 2 + $('.chapters > li').height() / 2
+        $('.chapters').scrollTop(t_h)
+    }
+
+}
+
+function get_chapters() {
+    $('.chapters').html('')
+    l_chapter = parseInt($('.books > div.selected').attr('data-ch'))
+    for (var k = 1; k < l_chapter + 1; k++) {
+        $('<li>' + k + '</li>').appendTo('.chapters')
+    }
+    // $('.chapters').find('li:first-of-type').addClass('selected')
+    setTimeout(function() {
+        $('body').removeClass('c_reading')
+    }, 200)
+    $('.chapters > li').eq(chapter - 1).addClass('selected')
+}
+
+$('.books > div').on('click', function() {
+    $('body').addClass('c_reading')
+    $('.books > div').removeClass()
+    $(this).addClass('selected')
+    book = $(this).attr('data-book')
+    chapter = 1
+    get_chapters()
+    read_once()
+    setCookie("book", book, 365);
+})
+
+$('.btn.left').on('click', function() {
+    $('body').toggleClass('left_open')
+
+})
+
+$('.btn.right').on('click', function() {
+    $('body').toggleClass('right_open')
+
+})
+
+$('.chapters').on('click', 'li', function(event) {
+    $('.chapters > li').removeClass()
+    $(this).addClass('selected')
+    chapter = parseInt($(this).text())
+    read_once()
+    $('body').removeClass('left_open')
+    setCookie("chapter", chapter, 365);
+});
+
+
+
+var f_size = 16
+
+$('#font_inc').on('click', function() {
+    f_size += 1
+    if (f_size > 72) { f_size = 72 }
+    $('.main').find('.text').css('font-size', f_size + 'px')
+    setCookie("fontsize", f_size, 365);
+})
+
+$('#font_dec').on('click', function() {
+    f_size -= 1
+    if (f_size < 6) { f_size = 6 }
+    $('.main').find('.text').css('font-size', f_size + 'px')
+    setCookie("fontsize", f_size, 365);
+})
+
+$('#inline').on('click', function() {
+    $('body').toggleClass('inline')
+})
+
+$('#colormode').on('click', function() {
+    $('body').toggleClass('bright')
+})
+
+
+function bundle() {
+    var pre_val = verses[0]
+    var s_bundle = pre_val
+    bundle_txt = ''
+    for (var k = 1; k < verses.length + 1; k++) {
+        if ((verses[k] - pre_val) != 1) {
+            //not continuous 
+            v_bundle.push([s_bundle, pre_val])
+            s_bundle = verses[k]
+            pre_val = verses[k]
+        } else {
+            //continuous
+            pre_val = verses[k]
+        }
+    }
+    for (var k = 0; k < v_bundle.length; k++) {
+        var last_comma = ','
+        if (k == v_bundle.length - 1) {
+            last_comma = ''
+        }
+        if (v_bundle[k][0] == v_bundle[k][1]) {
+            bundle_txt += v_bundle[k][0] + last_comma
+        } else {
+            bundle_txt += v_bundle[k][0] + '~' + v_bundle[k][1] + last_comma
+        }
+    }
+
+    if (bundle_txt == '') {
+        $('body').removeClass('copymode')
+    } else {
+        $('body').addClass('copymode')
+    }
+}
+
+var copy_txt = ''
+
+function clear() {
+    copy_txt = ''
+    verses = []
+    v_bundle = []
+    $('body').removeClass('copymode')
+    $('.text > div.on').removeClass('on')
+    $('#copyme').remove()
+    var txt = '<input id="copyme" style="position: absolute;left: -999px;top:-999px;opacity: 0;z-index: -1;pointer-events: none" type="text" value="">'
+    $('body').append(txt)
+}
+
+$('.main').on('click', '.text > div', function() {
+    if (!$('body').hasClass('left_open') && !$('body').hasClass('right_open')) {
+        $(this).toggleClass('on')
+        copy_txt = ''
+        verses = []
+        v_bundle = []
+        $('.text > div.on').each(function() {
+            copy_txt += $(this).find('p').text() + ' '
+            verses.push(parseInt($(this).find('span').text()))
+        })
+        bundle()
+        $('.selection').text(book_title + ' ' + chapter + '장 ' + bundle_txt + '절')
+        copy_txt += ' (' + $('.selection').text() + ')'
+    }
+    copy_txt.replace(' ','')
+    $('#copyme').val(copy_txt)
+})
+
+$('.close').on('click', function() {
+    clear()
+})
+
+$('.copy_me').on('click', function() {
+    setTimeout(function() {
+        clear()
+    }, 200)
+
+})
+new Clipboard('.copy_me');
+
+
+
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
+function ini_cookie() {
+    if (getCookie('book')) {
+        book = getCookie('book')
+        chapter = parseInt(getCookie('chapter'))
+        $('.books > div').removeClass('selected')
+        $('.books > div[data-book="' + book + '"]').addClass('selected')
+    }
+    // chapter = 1
+    l_chapter = parseInt($('.books > div.selected').attr('data-ch'))
+    if (chapter > l_chapter || chapter == null || typeof chapter == 'undefined' || chapter == NaN || chapter == 'NaN') { chapter = 1 }
+    get_chapters()
+
+    if (getCookie('version')) {
+        version = getCookie('version')
+        $('#current select').val(version)
+        $('body').attr('data-version', version)
+        if (version == 'krv') {
+            $('html').css('--color-scheme', '#00beff')
+        } else {
+            $('html').css('--color-scheme', '#ff0044')
+        }
+    }
+
+    read_once()
+    if (getCookie('fontsize')) {
+        f_size = parseInt(getCookie('fontsize'))
+        if (f_size > 72) { f_size = 72 }
+        $(document).find('.main .text').css('font-size', f_size + 'px')
+    }
+
+
+}
+
+ini_cookie()
+
+function sortResults(json) {
+    const ordered = {};
+    Object.keys(json).sort().forEach(function(key) {
+        ordered[key] = json[key];
+    });
+    return ordered
+}
+
+function rmv_letter(json) {
+    Object.keys(json).forEach(function(key) {
+        var t_txt = json[key]
+        var new_key = key.substr(1, key.length)
+        json[new_key] = t_txt
+        delete json[key]
+        // console.log(key)
+    });
+    bible_text.bjson = bible_json
+}
+
+var bible_text = new Vue({
+    el: '#b_text',
+    data: {
+        bjson: {}
+    }
+})
+
+$('#current select').on('change', function() {
+    console.log($(this).find('option:selected').val())
+    version = $(this).find('option:selected').val()
+    read_once()
+    $('body').attr('data-version', version)
+    setCookie("version", version, 365);
+    if (version == 'krv') {
+        $('html').css('--color-scheme', '#00beff')
+    } else {
+        $('html').css('--color-scheme', '#ff0044')
+    }
+})
+</script>
+
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>손가락 성경</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/fingerbible.css">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="apple_icon.png">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="krv.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+</head>
+
+<body>
+</body>
+<script>
+var t_json = {}
+
+function convert(array) {
+    for (var k = 0; k < array.length; k++) {
+        var t_book = array[k][0]+''
+        t_book = t_book.toLowerCase(); 
+        var t_chapter = 'c'+array[k][1]
+        var t_verse = 'v'+array[k][2]
+        var t_text = array[k][3]+''
+        if(typeof t_json[t_book] == 'undefined'){
+            t_json[t_book] = {}
+        }
+        if(typeof t_json[t_book][t_chapter] == 'undefined'){
+            t_json[t_book][t_chapter] = {}
+        }
+        t_json[t_book][t_chapter][t_verse] = t_text
+    }
+}
+</script>
+
+</html>

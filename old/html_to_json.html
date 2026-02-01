@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>손가락 성경</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/fingerbible.css">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="apple_icon.png">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="rnksv.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.6.10/firebase.js"></script>
+</head>
+
+<body>
+    <div class="books">
+        <div data-ch='50' data-book="gen">창세기</div>
+        <div data-ch='40' data-book="exo">출애굽기</div>
+        <div data-ch='27' data-book="lev">레위기</div>
+        <div data-ch='36' data-book="num">민수기</div>
+        <div data-ch='34' data-book="deut">신명기</div>
+        <div data-ch='24' data-book="jos">여호수아</div>
+        <div data-ch='21' data-book="jdg">사사기</div>
+        <div data-ch='4' data-book="rth">룻기</div>
+        <div data-ch='31' data-book="1sam">사무엘상</div>
+        <div data-ch='24' data-book="2sam">사무엘하</div>
+        <div data-ch='22' data-book="1kgs">열왕기상</div>
+        <div data-ch='25' data-book="2kgs">열왕기하</div>
+        <div data-ch='29' data-book="1chr">역대상</div>
+        <div data-ch='36' data-book="2chr">역대하</div>
+        <div data-ch='10' data-book="ezr">에스라</div>
+        <div data-ch='13' data-book="neh">느헤미야</div>
+        <div data-ch='10' data-book="esth">에스더</div>
+        <div data-ch='42' data-book="job">욥기</div>
+        <div data-ch='150' data-book="psm">시편</div>
+        <div data-ch='31' data-book="prv">잠언</div>
+        <div data-ch='12' data-book="ecc">전도서</div>
+        <div data-ch='8' data-book="song">아가</div>
+        <div data-ch='66' data-book="isa">이사야</div>
+        <div data-ch='52' data-book="jer">예레미야</div>
+        <div data-ch='5' data-book="lam">예레미야 애가</div>
+        <div data-ch='48' data-book="ezk">에스겔</div>
+        <div data-ch='12' data-book="dan">다니엘</div>
+        <div data-ch='14' data-book="hos">호세아</div>
+        <div data-ch='3' data-book="joel">요엘</div>
+        <div data-ch='9' data-book="amos">아모스</div>
+        <div data-ch='1' data-book="obad">오바댜</div>
+        <div data-ch='4' data-book="jon">요나</div>
+        <div data-ch='7' data-book="mic">미가</div>
+        <div data-ch='3' data-book="nah">나훔</div>
+        <div data-ch='3' data-book="hab">하박국</div>
+        <div data-ch='3' data-book="zep">스바냐</div>
+        <div data-ch='2' data-book="hag">학개</div>
+        <div data-ch='14' data-book="zec">스가랴</div>
+        <div data-ch='4' data-book="mal">말라기</div>
+        <div data-ch='28' data-book="mat">마태복음</div>
+        <div data-ch='16' data-book="mrk">마가복음</div>
+        <div data-ch='24' data-book="luk">누가복음</div>
+        <div data-ch='21' data-book="john">요한복음</div>
+        <div data-ch='28' data-book="acts">사도행전</div>
+        <div data-ch='16' data-book="rom">로마서</div>
+        <div data-ch='16' data-book="1cor">고린도전서</div>
+        <div data-ch='13' data-book="2cor">고린도후서</div>
+        <div data-ch='6' data-book="gal">갈라디아서</div>
+        <div data-ch='6' data-book="eph">에베소서</div>
+        <div data-ch='4' data-book="phil">빌립보서</div>
+        <div data-ch='4' data-book="col">골로새서</div>
+        <div data-ch='5' data-book="1the">데살로니가전서</div>
+        <div data-ch='3' data-book="2the">데살로니가후서</div>
+        <div data-ch='6' data-book="1tim">디모데전서</div>
+        <div data-ch='4' data-book="2tim">디모데후서</div>
+        <div data-ch='3' data-book="tit">디도서</div>
+        <div data-ch='1' data-book="phm">빌레몬서</div>
+        <div data-ch='13' data-book="heb">히브리서</div>
+        <div data-ch='5' data-book="jas">야고보서</div>
+        <div data-ch='5' data-book="1pet">베드로전서</div>
+        <div data-ch='3' data-book="2pet">베드로후서</div>
+        <div data-ch='5' data-book="1jn">요한일서</div>
+        <div data-ch='1' data-book="2jn">요한이서</div>
+        <div data-ch='1' data-book="3jn">요한삼서</div>
+        <div data-ch='1' data-book="jud">유다서</div>
+        <div data-ch='22' data-book="rev">요한계시록</div>
+    </div>
+    <div class="result"></div>
+</body>
+<script>
+var t_json = {}
+
+$.get( "rnksv/01_genesis.htm", function( data ) {
+  $( ".result" ).html( data );
+});
+
+</script>
+
+</html>

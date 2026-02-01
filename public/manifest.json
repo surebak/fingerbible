@@ -1,0 +1,79 @@
+{
+  "name": "손가락 성경",
+  "short_name": "손가락성경",
+  "description": "모바일기기 스마트폰 등에서 편리하게 볼 수 있는 온라인 한글 개역개정/새번역 성경입니다.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "fullscreen"],
+  "orientation": "portrait-primary",
+  "theme_color": "#ff0044",
+  "background_color": "#ffffff",
+  "categories": ["books", "education", "lifestyle"],
+  "lang": "ko",
+  "dir": "ltr",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple_icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/ogimg.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "창세기 (새번역)",
+      "short_name": "창세기",
+      "description": "창세기 1장 읽기 (새번역)",
+      "url": "/rnksv/gen/1",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "시편 23편 (새번역)",
+      "short_name": "시편 23",
+      "description": "시편 23편 읽기 (새번역)",
+      "url": "/rnksv/psm/23",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "요한복음 3장 (새번역)",
+      "short_name": "요한복음 3",
+      "description": "요한복음 3장 읽기 (새번역)",
+      "url": "/rnksv/john/3",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "마태복음 5장 (개역개정)",
+      "short_name": "마태 5장",
+      "description": "마태복음 5장 읽기 (개역개정)",
+      "url": "/krv/mat/5",
+      "icons": [{ "src": "/icon.png", "sizes": "192x192" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "id": "/",
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  }
+}
+

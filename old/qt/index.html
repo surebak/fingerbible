@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>QT</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="apple_icon.png">
+    <meta property="og:title" content="새번역 QT" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://fingerbible.com/qt" />
+    <meta property="og:description" content="새번역성경 묵상입니다." />
+    <meta property="og:image" content="https://fingerbible.com/qt/icon.png" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script>
+    // (function(i, s, o, g, r, a, m) {
+    //     i['GoogleAnalyticsObject'] = r;
+    //     i[r] = i[r] || function() {
+    //         (i[r].q = i[r].q || []).push(arguments)
+    //     }, i[r].l = 1 * new Date();
+    //     a = s.createElement(o),
+    //         m = s.getElementsByTagName(o)[0];
+    //     a.async = 1;
+    //     a.src = g;
+    //     m.parentNode.insertBefore(a, m)
+    // })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    // ga('create', 'UA-57744362-1', 'auto');
+    // ga('send', 'pageview');
+    </script>
+</head>
+<div class="float">
+    <div class="close"></div>
+    <p class="selection"></p>
+    <div class="copy_me">복사하기</div>
+</div>
+
+<body class="loading">
+    <select name="version" id="">
+        <option value="1212">새번역</option>
+        <option value="1001">개역개정</option>
+    </select>
+    <div class="loader">
+        <div class="sk-cube-grid">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+        </div>
+    </div>
+    <div class="wrapper">
+        <h2></h2>
+        <div class="result">
+        </div>
+    </div>
+</body>
+<script>
+var d = new Date();
+var t_y = d.getFullYear();
+var t_m = d.getMonth() + 1;
+var t_d = d.getDate();
+var t_v = 1212;
+var the_book = ''
+var the_chapter = ''
+
+function load_qt(year, month, day, version) {
+    $.ajax({
+        url: "http://arenmok.cafe24.com/qt.php?year=" + year + "&month=" + month + "&day=" + day + "&version=" + version,
+        success: function(result) {
+            $('h3').remove()
+            var title = $(result).find('.book_line').text()
+            title = title.match(/\[(.*?)\]/)
+            $('h2').text(title[1].replace(/\((.*?)\)/, ''))
+            the_book = $('h2').text().match(/([^\s]+)/)[0]
+            the_chapter = $('h2').text().match(/(\d{1,3})(?=:)/)[0]
+            var the_qt = $(result).find('table').html()
+            $('.result').html(the_qt)
+            $('h2').before('<h3>' + month + '<span>월</span> ' + day + '<span>일</span></h3>')
+            $('body').removeClass('loading')
+        }
+    });
+}
+
+load_qt(t_y, t_m, t_d, t_v)
+
+var copy_txt = ''
+var verses = []
+var v_bundle = []
+var bundle_txt = ''
+
+
+$('select').on('change', function() {
+    load_qt(t_y, t_m, t_d, $('select option:selected').val())
+    $('body').addClass('loading')
+})
+
+$('.result').on('click', 'tr', function() {
+    $(this).toggleClass('on')
+    copy_txt = ''
+    verses = []
+    v_bundle = []
+    $('tr.on').each(function() {
+        copy_txt += $(this).find('td').text()
+        verses.push(parseInt($(this).find('th').text()))
+    })
+    bundle()
+    $('.selection').text(the_book +' '+the_chapter+'장 '+ bundle_txt+'절')
+    copy_txt += ' (' + $('.selection').text() + ')'
+
+})
+
+$('.close').on('click',function(){
+    clear()
+})
+
+$('.copy_me').on('click', function() {
+    copyVerses()
+    clear()
+})
+
+function copyVerses() {
+    var aux = document.createElement("input")
+    aux.setAttribute("value", copy_txt)
+    document.body.appendChild(aux);
+    aux.select();
+    document.execCommand("copy");
+    document.body.removeChild(aux);
+}
+
+function bundle() {
+    var pre_val = verses[0]
+    var s_bundle = pre_val
+    bundle_txt = ''
+    for (var k = 1; k < verses.length+1; k++) {
+        if ((verses[k] - pre_val) != 1) {
+            //not continuous 
+            v_bundle.push([s_bundle,pre_val])
+            s_bundle = verses[k]
+            pre_val = verses[k]
+        } else {
+            //continuous
+            pre_val = verses[k]
+        }
+    }
+    for(var k=0;k<v_bundle.length;k++){
+        var last_comma = ','
+        if(k == v_bundle.length-1){
+            last_comma = ''
+        }
+        if(v_bundle[k][0] == v_bundle[k][1]){
+            bundle_txt += v_bundle[k][0]+last_comma
+        }
+        else{
+            bundle_txt += v_bundle[k][0]+'~'+v_bundle[k][1]+last_comma
+        }
+    }
+
+    if(bundle_txt == ''){
+        $('body').removeClass('copymode')
+    }
+    else{
+        $('body').addClass('copymode')
+    }
+}
+
+function clear(){
+    copy_txt = ''
+    verses = []
+    v_bundle = []
+    $('body').removeClass('copymode')
+    $('tr.on').removeClass('on')
+}
+
+</script>
+
+</html>

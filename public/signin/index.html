@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>손가락 성경</title>
+    <link rel="manifest" href="manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="keywords" content="새번역, 새번역성경, 개역개정,개역개정성경,온라인성경,인터넷개역개정,성경,바이블,한글성경,모바일,모아빌웹,온라인,웹앱,webapp,PWA" />
+    <meta name="description" content="모바일기기 스마트폰 등에서 편리하게 볼 수 있는 온라인 한글 개역개정/새번역 성경입니다." />
+    <meta property="og:url" content="www.fingerbible.com" />
+    <meta property="fb:app_id" content="1522654831340442" />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="손가락성경" />
+    <meta property="og:see_also" content="www.fingerbible.com" />
+    <meta property="og:image" content="http://fingerbible.com/ogimg.png" />
+    <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1">
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/fingerbible.css">
+    <link rel="icon" href="icon.png">
+    <link rel="apple-touch-icon" href="apple_icon.png">
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.5/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+</head>
+
+<body>
+    <div id="firebaseui-auth-container"></div>
+    <div id="loader">Loading...</div>
+</body>
+<script>
+var config = {
+    apiKey: "AIzaSyAUqa0kNzRa94L50dwpc5rlPpQ0LOJSQnI",
+    authDomain: "bibles-da0c4.firebaseapp.com",
+    databaseURL: "https://bibles-da0c4.firebaseapp.com",
+    projectId: "bibles-da0c4",
+    storageBucket: "bibles-da0c4.appspot.com"
+};
+firebase.initializeApp(config);
+
+var ui = new firebaseui.auth.AuthUI(firebase.auth());
+
+ui.start('#firebaseui-auth-container', {
+    signInOptions: [{
+        provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        requireDisplayName: false
+    }]
+});
+
+var uiConfig = {
+    callbacks: {
+        signInSuccessWithAuthResult: function(authResult, redirectUrl) {
+            // User successfully signed in.
+            // Return type determines whether we continue the redirect automatically
+            // or whether we leave that to developer to handle.
+            return true;
+        },
+        uiShown: function() {
+            // The widget is rendered.
+            // Hide the loader.
+            document.getElementById('loader').style.display = 'none';
+        }
+    },
+    // Will use popup for IDP Providers sign-in flow instead of the default, redirect.
+    signInFlow: 'popup',
+    signInSuccessUrl: 'https://fingerbible.com/',
+    signInOptions: [
+        // Leave the lines as is for the providers you want to offer your users.
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID,
+    ]
+};
+ui.start('#firebaseui-auth-container', uiConfig);
+</script>
+
+</html>

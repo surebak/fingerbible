@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+Disallow: /signin/
+Disallow: /old/
+
+# 크롤 속도 조절
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://fingerbible.com/sitemap.xml
+
+# 주요 검색엔진
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
