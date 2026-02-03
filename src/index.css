@@ -571,6 +571,7 @@ header .title {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+  transform: translateZ(0);
   z-index: 100;
   display: flex;
   align-items: stretch;
