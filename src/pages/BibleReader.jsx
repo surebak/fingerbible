@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useBible } from "../hooks/useBible";
+import { useSEO } from "../hooks/useSEO";
 import BibleText from "../components/BibleText";
 import { ALL_BOOKS, VERSIONS } from "../constants/bibleData";
 import NotFound from "./NotFound";
@@ -15,6 +16,48 @@ export default function BibleReader() {
     const validChapter = bookData && Number.isInteger(chapterNum) && chapterNum >= 1 && chapterNum <= bookData.chapters;
 
     const isValid = validVersion && bookData && validChapter;
+
+    const versionData = VERSIONS.find(v => v.id === version);
+    const versionName = versionData ? versionData.name : '';
+    const bookName = bookData ? bookData.name : '';
+
+    const jsonLd = useMemo(() => {
+        if (!isValid) return null;
+        return {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            "name": `${bookName} ${chapter}장 - 손가락 성경`,
+            "description": `${bookName} ${chapter}장 (${versionName}) - 손가락 성경에서 읽기`,
+            "url": `https://fingerbible.com/${version}/${book}/${chapter}`,
+            "about": {
+                "@type": "Book",
+                "name": bookName,
+                "bookEdition": versionName,
+                "inLanguage": "ko",
+            },
+            "breadcrumb": {
+                "@type": "BreadcrumbList",
+                "itemListElement": [
+                    { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://fingerbible.com" },
+                    { "@type": "ListItem", "position": 2, "name": versionName, "item": `https://fingerbible.com/${version}/gen/1` },
+                    { "@type": "ListItem", "position": 3, "name": bookName, "item": `https://fingerbible.com/${version}/${book}/1` },
+                    { "@type": "ListItem", "position": 4, "name": `${chapter}장` },
+                ],
+            },
+        };
+    }, [isValid, bookName, versionName, version, book, chapter]);
+
+    useSEO({
+        title: isValid ? `${bookName} ${chapter}장 (${versionName}) - 손가락 성경` : '손가락 성경',
+        description: isValid
+            ? `${bookName} ${chapter}장을 ${versionName}으로 읽어보세요. 손가락 성경에서 오프라인 무료 성경 읽기.`
+            : '오프라인 무료 성경 읽기',
+        path: isValid ? `/${version}/${book}/${chapter}` : '/',
+        jsonLd,
+        keywords: isValid
+            ? `${bookName}, ${bookName} ${chapter}장, ${versionName}, 성경, 온라인 성경`
+            : undefined,
+    });
 
     const { data, loading, error } = useBible(version, book);
 
