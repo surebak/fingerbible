@@ -432,31 +432,31 @@ header .title {
 /* Verse Selection Toolbar */
 .verse-toolbar {
   position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
   z-index: 20;
   display: flex;
   align-items: center;
   gap: 8px;
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid #444;
-  border-radius: 12px;
-  padding: 8px 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.95);
+  padding: 0 8px;
   animation: toolbar-in 0.2s ease-out;
 }
 
 .bright .verse-toolbar {
-  background: rgba(255, 255, 255, 0.95);
-  border-color: #ccc;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 .verse-toolbar-count {
-  font-size: 0.85em;
+  flex: 1;
+  font-size: 0.9em;
   color: #aaa;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .bright .verse-toolbar-count {
@@ -491,6 +491,7 @@ header .title {
 .verse-toolbar-btn.copy {
   background: var(--color-scheme);
   color: white;
+  white-space: nowrap;
 }
 
 .verse-toolbar-btn.copy:active {
@@ -500,11 +501,11 @@ header .title {
 @keyframes toolbar-in {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(10px);
+    transform: translateY(-100%);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 

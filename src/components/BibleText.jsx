@@ -1,4 +1,5 @@
 import { useMemo, useState, useCallback, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 import { useOutletContext, useParams } from "react-router-dom";
 import { ALL_BOOKS } from "../constants/bibleData";
@@ -52,13 +53,11 @@ export default function BibleText({ data, chapter }) {
         setCopied(false);
     }, []);
 
-    const handleCopy = useCallback(async () => {
-        const sorted = [...selectedVerses]
+    // 연속 구절 묶기 알고리즘 (legacy bundle)
+    const bundleVerses = useCallback((verseSet) => {
+        const sorted = [...verseSet]
             .sort((a, b) => parseInt(a.replace('v', '')) - parseInt(b.replace('v', '')));
-
         const nums = sorted.map(v => parseInt(v.replace('v', '')));
-
-        // 연속 구절 묶기 알고리즘 (legacy bundle)
         const bundles = [];
         let start = nums[0];
         let prev = nums[0];
@@ -71,10 +70,22 @@ export default function BibleText({ data, chapter }) {
                 prev = nums[i];
             }
         }
-        const verseRange = bundles
+        return bundles
             .map(([s, e]) => s === e ? `${s}` : `${s}~${e}`)
             .join(',');
+    }, []);
 
+    const selectionLabel = useMemo(() => {
+        if (selectedVerses.size === 0) return '';
+        const verseRange = bundleVerses(selectedVerses);
+        return `${bookName} ${chapter}:${verseRange}`;
+    }, [selectedVerses, bundleVerses, bookName, chapter]);
+
+    const handleCopy = useCallback(async () => {
+        const sorted = [...selectedVerses]
+            .sort((a, b) => parseInt(a.replace('v', '')) - parseInt(b.replace('v', '')));
+
+        const verseRange = bundleVerses(selectedVerses);
         const reference = `[${bookName} ${chapter}:${verseRange}]`;
 
         const text = sorted
@@ -129,17 +140,18 @@ export default function BibleText({ data, chapter }) {
                 ))}
             </div>
 
-            {isSelecting && (
+            {isSelecting && createPortal(
                 <div className="verse-toolbar">
                     <button className="verse-toolbar-btn" onClick={handleClearSelection}>
                         <X size={18} />
                     </button>
-                    <span className="verse-toolbar-count">{selectedVerses.size}절 선택</span>
+                    <span className="verse-toolbar-count">{selectionLabel}</span>
                     <button className="verse-toolbar-btn copy" onClick={handleCopy}>
                         {copied ? <Check size={18} /> : <Copy size={18} />}
                         <span>{copied ? '복사됨' : '복사'}</span>
                     </button>
-                </div>
+                </div>,
+                document.body
             )}
         </>
     );

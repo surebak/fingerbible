@@ -19,7 +19,6 @@ export default function Layout() {
 
     const { updateActiveWindow, saveScrollPosition, activeWindowId, getActiveWindow } = useMultiWindow();
     const wrapperRef = useRef(null);
-    const pendingScrollRef = useRef(null);
 
     const currentBookName = ALL_BOOKS.find(b => b.id === book)?.name || '';
 
@@ -102,26 +101,31 @@ export default function Layout() {
         if (!wrapperEl) return;
 
         const savedScroll = win?.scrollTop ?? 0;
-        pendingScrollRef.current = savedScroll;
-        wrapperEl.scrollTop = 0;
+        let restored = false;
 
-        // Use MutationObserver to wait for actual content to render (async data load)
-        const observer = new MutationObserver(() => {
-            if (pendingScrollRef.current != null) {
-                wrapperEl.scrollTop = pendingScrollRef.current;
-                pendingScrollRef.current = null;
+        const restore = () => {
+            if (restored) return;
+            wrapperEl.scrollTop = savedScroll;
+            if (savedScroll === 0 || Math.abs(wrapperEl.scrollTop - savedScroll) < 2) {
+                restored = true;
                 observer.disconnect();
             }
-        });
+        };
+
+        // 1) 이미 콘텐츠가 렌더링된 경우 (캐시된 데이터)
+        const raf = requestAnimationFrame(restore);
+
+        // 2) 비동기 데이터 로드 후 DOM이 변경되는 경우
+        const observer = new MutationObserver(restore);
         observer.observe(wrapperEl, { childList: true, subtree: true });
 
-        // Fallback: disconnect after 3s to avoid leaks
+        // 3) 안전장치: 3초 후 정리
         const timeout = setTimeout(() => {
             observer.disconnect();
-            pendingScrollRef.current = null;
         }, 3000);
 
         return () => {
+            cancelAnimationFrame(raf);
             observer.disconnect();
             clearTimeout(timeout);
         };
@@ -140,7 +144,15 @@ export default function Layout() {
                 </div>
                 <div
                     className="btn multi-window"
-                    onClick={() => setIsTileOpen(!isTileOpen)}
+                    onClick={() => {
+                        if (!isTileOpen) {
+                            const wrapperEl = wrapperRef.current;
+                            if (wrapperEl) {
+                                saveScrollPosition(activeWindowId, wrapperEl.scrollTop);
+                            }
+                        }
+                        setIsTileOpen(!isTileOpen);
+                    }}
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <rect x="2" y="2" width="9" height="9" rx="1" />
