@@ -28,7 +28,7 @@ export default function TileManager({ isOpen, onClose, onSelectWindow, onAddWind
 
     return (
         <div className="tile-overlay" onClick={onClose}>
-            <div className="tile-container" onClick={e => e.stopPropagation()}>
+            <div className="tile-container" onClick={onClose}>
                 <div className="tile-header">
                     <button className="tile-close-btn" onClick={onClose}>✕</button>
                 </div>
