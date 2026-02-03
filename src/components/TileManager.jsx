@@ -9,13 +9,15 @@ export default function TileManager({ isOpen, onClose, onSelectWindow, onAddWind
 
     if (!isOpen) return null;
 
-    const handleTileClick = (win) => {
+    const handleTileClick = (e, win) => {
+        e.stopPropagation();
         setActiveWindow(win.id);
         onSelectWindow(win);
         onClose();
     };
 
-    const handleAdd = () => {
+    const handleAdd = (e) => {
+        e.stopPropagation();
         const newWin = addWindow();
         onAddWindow(newWin);
     };
@@ -40,7 +42,7 @@ export default function TileManager({ isOpen, onClose, onSelectWindow, onAddWind
                             <div
                                 key={win.id}
                                 className={`tile-card ${isActive ? 'tile-active' : ''}`}
-                                onClick={() => handleTileClick(win)}
+                                onClick={(e) => handleTileClick(e, win)}
                             >
                                 {windows.length > 1 && (
                                     <button
