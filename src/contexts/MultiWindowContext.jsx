@@ -77,8 +77,10 @@ export function MultiWindowProvider({ children }) {
 
     const addWindow = useCallback(() => {
         const id = generateId();
-        const newWindow = { id, version: 'rnksv', book: 'gen', chapter: '1' };
+        let newWindow;
         setState(prev => {
+            const active = prev.windows.find(w => w.id === prev.activeWindowId) || prev.windows[0];
+            newWindow = { id, version: active.version, book: active.book, chapter: active.chapter };
             const next = {
                 windows: [...prev.windows, newWindow],
                 activeWindowId: id,

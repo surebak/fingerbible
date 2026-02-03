@@ -568,16 +568,18 @@ header .title {
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 100;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   animation: tile-fade-in 0.2s ease-out;
 }
 
 .bright .tile-overlay {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 @keyframes tile-fade-in {
@@ -586,23 +588,23 @@ header .title {
 }
 
 .tile-container {
-  width: 90%;
-  max-width: 400px;
-  max-height: 80vh;
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
   overflow-y: auto;
+  padding: 0 16px;
 }
 
 .tile-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 12px 4px;
+  padding: 16px 4px;
   color: #ccc;
   font-size: 0.9em;
-}
-
-.bright .tile-header {
-  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .tile-close-btn {
@@ -616,7 +618,9 @@ header .title {
 
 .tile-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  max-width: 480px;
+  margin: 0 auto;
   gap: 10px;
 }
 
@@ -644,7 +648,11 @@ header .title {
 }
 
 .tile-card.tile-active {
-  border-color: var(--color-scheme);
+  border-color: #fff;
+}
+
+.bright .tile-card.tile-active {
+  border-color: #222;
 }
 
 .tile-book {

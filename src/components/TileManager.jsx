@@ -2,8 +2,9 @@ import { useMultiWindow } from '../contexts/MultiWindowContext';
 import { ALL_BOOKS } from '../constants/bibleData';
 
 const VERSION_LABELS = { krv: '개역개정', rnksv: '새번역' };
+const VERSION_COLORS = { krv: '#00beff', rnksv: '#ff0044' };
 
-export default function TileManager({ isOpen, onClose, onSelectWindow }) {
+export default function TileManager({ isOpen, onClose, onSelectWindow, onAddWindow }) {
     const { windows, activeWindowId, addWindow, removeWindow, setActiveWindow } = useMultiWindow();
 
     if (!isOpen) return null;
@@ -16,8 +17,7 @@ export default function TileManager({ isOpen, onClose, onSelectWindow }) {
 
     const handleAdd = () => {
         const newWin = addWindow();
-        onSelectWindow(newWin);
-        onClose();
+        onAddWindow(newWin);
     };
 
     const handleDelete = (e, windowId) => {
@@ -30,7 +30,6 @@ export default function TileManager({ isOpen, onClose, onSelectWindow }) {
         <div className="tile-overlay" onClick={onClose}>
             <div className="tile-container" onClick={e => e.stopPropagation()}>
                 <div className="tile-header">
-                    <span>열린 창</span>
                     <button className="tile-close-btn" onClick={onClose}>✕</button>
                 </div>
                 <div className="tile-grid">
@@ -52,7 +51,7 @@ export default function TileManager({ isOpen, onClose, onSelectWindow }) {
                                     </button>
                                 )}
                                 <div className="tile-book">{bookName} {win.chapter}장</div>
-                                <div className="tile-version">
+                                <div className="tile-version" style={{ color: VERSION_COLORS[win.version] || '#999' }}>
                                     {VERSION_LABELS[win.version] || win.version}
                                 </div>
                             </div>

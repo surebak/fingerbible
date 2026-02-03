@@ -19,6 +19,7 @@ export default function Layout() {
 
     const { updateActiveWindow, saveScrollPosition, activeWindowId, getActiveWindow } = useMultiWindow();
     const wrapperRef = useRef(null);
+    const openLeftAfterNav = useRef(false);
 
     const currentBookName = ALL_BOOKS.find(b => b.id === book)?.name || '';
 
@@ -79,7 +80,12 @@ export default function Layout() {
 
     // Close menus on route change
     useEffect(() => {
-        setIsLeftOpen(false);
+        if (openLeftAfterNav.current) {
+            openLeftAfterNav.current = false;
+            setIsLeftOpen(true);
+        } else {
+            setIsLeftOpen(false);
+        }
         setIsRightOpen(false);
         setIsTileOpen(false);
         document.body.classList.remove('c_reading');
@@ -92,6 +98,11 @@ export default function Layout() {
             saveScrollPosition(activeWindowId, wrapperEl.scrollTop);
         }
         navigate(`/${win.version}/${win.book}/${win.chapter}`);
+    };
+
+    const handleAddWindow = (win) => {
+        openLeftAfterNav.current = true;
+        handleSelectWindow(win);
     };
 
     // Restore scroll position when active window changes
@@ -219,6 +230,7 @@ export default function Layout() {
                 isOpen={isTileOpen}
                 onClose={() => setIsTileOpen(false)}
                 onSelectWindow={handleSelectWindow}
+                onAddWindow={handleAddWindow}
             />
         </>
     );
