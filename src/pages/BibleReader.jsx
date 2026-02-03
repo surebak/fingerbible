@@ -50,8 +50,8 @@ export default function BibleReader() {
     useSEO({
         title: isValid ? `${bookName} ${chapter}장 (${versionName}) - 손가락 성경` : '손가락 성경',
         description: isValid
-            ? `${bookName} ${chapter}장을 ${versionName}으로 읽어보세요. 손가락 성경에서 오프라인 무료 성경 읽기.`
-            : '오프라인 무료 성경 읽기',
+            ? `${bookName} ${chapter}장을 ${versionName}으로 온라인에서 무료로 읽어보세요. 손가락 성경.`
+            : '온라인 무료 성경 읽기',
         path: isValid ? `/${version}/${book}/${chapter}` : '/',
         jsonLd,
         keywords: isValid
