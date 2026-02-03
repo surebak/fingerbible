@@ -56,22 +56,36 @@ export default function BibleText({ data, chapter }) {
         const sorted = [...selectedVerses]
             .sort((a, b) => parseInt(a.replace('v', '')) - parseInt(b.replace('v', '')));
 
-        const verseNums = sorted.map(v => v.replace('v', ''));
-        const verseRange = verseNums.length === 1
-            ? verseNums[0]
-            : `${verseNums[0]}-${verseNums[verseNums.length - 1]}`;
+        const nums = sorted.map(v => parseInt(v.replace('v', '')));
 
-        const reference = `${bookName} ${chapter}:${verseRange}`;
+        // 연속 구절 묶기 알고리즘 (legacy bundle)
+        const bundles = [];
+        let start = nums[0];
+        let prev = nums[0];
+        for (let i = 1; i <= nums.length; i++) {
+            if (nums[i] - prev !== 1) {
+                bundles.push([start, prev]);
+                start = nums[i];
+                prev = nums[i];
+            } else {
+                prev = nums[i];
+            }
+        }
+        const verseRange = bundles
+            .map(([s, e]) => s === e ? `${s}` : `${s}~${e}`)
+            .join(',');
+
+        const reference = `[${bookName} ${chapter}:${verseRange}]`;
 
         const text = sorted
             .map(vNum => {
                 const verse = verses.find(v => v.num === vNum);
-                return verse ? `${vNum.replace('v', '')} ${verse.text}` : '';
+                return verse ? verse.text : '';
             })
             .filter(Boolean)
-            .join('\n');
+            .join(' ');
 
-        const copyText = `${reference}\n${text}`;
+        const copyText = `${text} ${reference}`;
 
         try {
             await navigator.clipboard.writeText(copyText);

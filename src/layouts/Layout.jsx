@@ -48,18 +48,11 @@ export default function Layout() {
 
     // Navigate handler for LeftSidebar
     const handleBookNavigation = (bookId, chapterNum) => {
-        // If only book selected, we just want to open the chapters pane.
-        // Logic for that is handled by passing down `bookId` to LeftSidebar state?
-        // Actually, if a chapter is clicked (chapterNum provided):
+        const v = version || 'rnksv';
         if (chapterNum) {
-            const v = version || 'rnksv';
             navigate(`/${v}/${bookId}/${chapterNum}`);
-            setIsLeftOpen(false); // Close sidebar on selection
+            setIsLeftOpen(false);
         } else {
-            // Just selecting a book. 
-            // We apply 'c_reading' class to slide chapters?
-            // LeftSidebar needs to tell us to add 'c_reading'.
-            // Let's toggle it based on internal LeftSidebar interaction.
             document.body.classList.add('c_reading');
         }
     };
@@ -133,6 +126,7 @@ export default function Layout() {
             </div>
 
             <LeftSidebar
+                isOpen={isLeftOpen}
                 currentBook={book}
                 currentChapter={chapter}
                 onBookSelect={handleBookNavigation}
