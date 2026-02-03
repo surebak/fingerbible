@@ -100,8 +100,6 @@ export default function BibleText({ data, chapter }) {
 
         try {
             await navigator.clipboard.writeText(copyText);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
         } catch {
             // fallback
             const textarea = document.createElement('textarea');
@@ -110,9 +108,10 @@ export default function BibleText({ data, chapter }) {
             textarea.select();
             document.execCommand('copy');
             document.body.removeChild(textarea);
-            setCopied(true);
-            setTimeout(() => setCopied(false), 2000);
         }
+
+        setSelectedVerses(new Set());
+        setCopied(false);
     }, [selectedVerses, verses, bookName, chapter]);
 
     if (!verses.length) {
