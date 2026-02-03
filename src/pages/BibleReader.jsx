@@ -1,29 +1,35 @@
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useBible } from "../hooks/useBible";
 import BibleText from "../components/BibleText";
-import { getPrevNext } from "../utils/bibleUtils";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ALL_BOOKS, VERSIONS } from "../constants/bibleData";
+import NotFound from "./NotFound";
 
 
 export default function BibleReader() {
     const { version, book, chapter } = useParams();
+
+    const validVersion = VERSIONS.some(v => v.id === version);
+    const bookData = ALL_BOOKS.find(b => b.id === book);
+    const chapterNum = parseInt(chapter);
+    const validChapter = bookData && Number.isInteger(chapterNum) && chapterNum >= 1 && chapterNum <= bookData.chapters;
+
+    const isValid = validVersion && bookData && validChapter;
+
     const { data, loading, error } = useBible(version, book);
-    const { prev, next } = getPrevNext(version, book, chapter);
 
     // Save last read
     useEffect(() => {
-        if (version && book && chapter) {
+        if (isValid) {
             localStorage.setItem('fingerbible-last-read', JSON.stringify({
                 version, book, chapter
             }));
         }
-    }, [version, book, chapter]);
+    }, [version, book, chapter, isValid]);
 
-    // Scroll to top on navigation
-    // Note: Layout handles scroll, but we might need window scrollTo if full page reload happens, 
-    // currently React Router handles it but Layout overflow might keep scroll pos.
-    // We'll rely on user manually scrolling or implement specific scroll-to-top logic in Layout/here if needed.
+    if (!isValid) {
+        return <NotFound />;
+    }
 
     if (loading) {
         return (
