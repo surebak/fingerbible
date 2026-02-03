@@ -370,6 +370,10 @@ header .title {
   color: black;
 }
 
+.left_open .config {
+  visibility: hidden;
+}
+
 .config li {
   padding: 10px 16px;
   border-bottom: 1px solid #333;
