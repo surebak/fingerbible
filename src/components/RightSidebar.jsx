@@ -37,7 +37,6 @@ export default function RightSidebar({ isOpen, onClose }) {
     return (
         <div className="config">
             <li id="current">
-                <p>읽기</p>
                 <select value={version || 'rnksv'} onChange={handleVersionChange}>
                     <option value="krv">개역개정</option>
                     <option value="rnksv">새번역</option>

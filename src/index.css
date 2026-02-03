@@ -319,6 +319,10 @@ header .title {
   transform: translate3d(0, 0, 0);
 }
 
+.left_open .chapters {
+  transform: none;
+}
+
 .bright .chapters {
   background-color: #dddddd !important;
   color: #000000 !important;
@@ -378,11 +382,12 @@ header .title {
 
 .config li#current select {
   background: transparent;
-  border: none;
+  border: 1px solid #888;
+  border-radius: 4px;
+  padding: 4px 8px;
   color: white;
   font-size: 1em;
   width: 100%;
-  margin-top: 5px;
 }
 
 .bright .config li#current select {
@@ -407,12 +412,96 @@ header .title {
   line-height: 1.6;
 }
 
+.text>div {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
 .text>div.on {
   background: #333;
 }
 
 .bright .text>div.on {
   background: #ddd;
+}
+
+/* Verse Selection Toolbar */
+.verse-toolbar {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  animation: toolbar-in 0.2s ease-out;
+}
+
+.bright .verse-toolbar {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: #ccc;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.verse-toolbar-count {
+  font-size: 0.85em;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.bright .verse-toolbar-count {
+  color: #666;
+}
+
+.verse-toolbar-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.85em;
+}
+
+.verse-toolbar-btn:active {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bright .verse-toolbar-btn {
+  color: black;
+}
+
+.bright .verse-toolbar-btn:active {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.verse-toolbar-btn.copy {
+  background: var(--color-scheme);
+  color: white;
+}
+
+.verse-toolbar-btn.copy:active {
+  opacity: 0.8;
+}
+
+@keyframes toolbar-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* Loading */
