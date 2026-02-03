@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import LeftSidebar from "../components/LeftSidebar";
 import RightSidebar from "../components/RightSidebar";
 import TileManager from "../components/TileManager";
+import InstallPrompt from "../components/InstallPrompt";
 import { ALL_BOOKS } from "../constants/bibleData";
 import { useSettings } from "../hooks/useSettings";
 import { useMultiWindow } from "../contexts/MultiWindowContext";
@@ -227,6 +228,8 @@ export default function Layout() {
                 onSelectWindow={handleSelectWindow}
                 onAddWindow={handleAddWindow}
             />
+
+            <InstallPrompt />
         </>
     );
 }
