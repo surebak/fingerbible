@@ -4,11 +4,14 @@ import './index.css'
 import App from './App.jsx'
 
 import { SettingsProvider } from './contexts/SettingsContext'
+import { MultiWindowProvider } from './contexts/MultiWindowContext'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <SettingsProvider>
-      <App />
+      <MultiWindowProvider>
+        <App />
+      </MultiWindowProvider>
     </SettingsProvider>
   </StrictMode>,
 )

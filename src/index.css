@@ -538,3 +538,186 @@ header .title {
   margin-left: -53px;
   /* Animations omitted for brevity, can add back if needed */
 }
+
+/* Multi-Window Icon */
+.btn.multi-window {
+  width: 40px;
+  height: 50px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.btn.multi-window svg {
+  width: 20px;
+  height: 20px;
+  stroke: var(--color-scheme);
+}
+
+/* Tile Manager Overlay */
+.tile-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: tile-fade-in 0.2s ease-out;
+}
+
+.bright .tile-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes tile-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.tile-container {
+  width: 90%;
+  max-width: 400px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.tile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 4px;
+  color: #ccc;
+  font-size: 0.9em;
+}
+
+.bright .tile-header {
+  color: #fff;
+}
+
+.tile-close-btn {
+  background: none;
+  border: none;
+  color: #888;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.tile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.tile-card {
+  background: #333;
+  border: 2px solid #444;
+  border-radius: 10px;
+  padding: 20px 14px;
+  cursor: pointer;
+  position: relative;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.bright .tile-card {
+  background: #fff;
+  border-color: #ddd;
+}
+
+.tile-card:active {
+  background: #3a3a3a;
+}
+
+.bright .tile-card:active {
+  background: #f0f0f0;
+}
+
+.tile-card.tile-active {
+  border-color: var(--color-scheme);
+}
+
+.tile-book {
+  font-size: 1em;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.bright .tile-book {
+  color: #222;
+}
+
+.tile-version {
+  font-size: 0.75em;
+  color: #999;
+}
+
+.bright .tile-version {
+  color: #888;
+}
+
+.tile-delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: #888;
+  font-size: 0.75em;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tile-delete-btn:active {
+  background: rgba(255, 0, 0, 0.3);
+  color: #fff;
+}
+
+.bright .tile-delete-btn {
+  background: rgba(0, 0, 0, 0.05);
+  color: #aaa;
+}
+
+.tile-card.tile-add {
+  border-style: dashed;
+  border-color: #555;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.bright .tile-card.tile-add {
+  border-color: #bbb;
+}
+
+.tile-add-icon {
+  font-size: 1.8em;
+  color: #666;
+  line-height: 1;
+}
+
+.bright .tile-add-icon {
+  color: #999;
+}
+
+.tile-add-label {
+  font-size: 0.8em;
+  color: #666;
+}
+
+.bright .tile-add-label {
+  color: #999;
+}

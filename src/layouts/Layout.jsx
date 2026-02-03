@@ -1,9 +1,11 @@
 import { Outlet, Link, useParams, useNavigate, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LeftSidebar from "../components/LeftSidebar";
 import RightSidebar from "../components/RightSidebar";
+import TileManager from "../components/TileManager";
 import { ALL_BOOKS } from "../constants/bibleData";
 import { useSettings } from "../hooks/useSettings";
+import { useMultiWindow } from "../contexts/MultiWindowContext";
 
 export default function Layout() {
     const navigate = useNavigate();
@@ -13,10 +15,14 @@ export default function Layout() {
 
     const [isLeftOpen, setIsLeftOpen] = useState(false);
     const [isRightOpen, setIsRightOpen] = useState(false);
+    const [isTileOpen, setIsTileOpen] = useState(false);
+
+    const { updateActiveWindow, saveScrollPosition, activeWindowId, getActiveWindow } = useMultiWindow();
+    const wrapperRef = useRef(null);
+    const pendingScrollRef = useRef(null);
 
     const currentBookName = ALL_BOOKS.find(b => b.id === book)?.name || '';
 
-    // Handle body classes for Legacy CSS layout
     // Handle body classes for Legacy CSS layout
     useEffect(() => {
         const body = document.body;
@@ -65,12 +71,61 @@ export default function Layout() {
         document.body.classList.remove('c_reading');
     };
 
+    // Sync URL changes to active window state
+    useEffect(() => {
+        if (version && book && chapter) {
+            updateActiveWindow(version, book, chapter);
+        }
+    }, [version, book, chapter, updateActiveWindow]);
+
     // Close menus on route change
     useEffect(() => {
         setIsLeftOpen(false);
         setIsRightOpen(false);
+        setIsTileOpen(false);
         document.body.classList.remove('c_reading');
     }, [location.pathname]);
+
+    // Handle tile selection → save current scroll, then navigate to that window's position
+    const handleSelectWindow = (win) => {
+        const wrapperEl = wrapperRef.current;
+        if (wrapperEl) {
+            saveScrollPosition(activeWindowId, wrapperEl.scrollTop);
+        }
+        navigate(`/${win.version}/${win.book}/${win.chapter}`);
+    };
+
+    // Restore scroll position when active window changes
+    useEffect(() => {
+        const win = getActiveWindow();
+        const wrapperEl = wrapperRef.current;
+        if (!wrapperEl) return;
+
+        const savedScroll = win?.scrollTop ?? 0;
+        pendingScrollRef.current = savedScroll;
+        wrapperEl.scrollTop = 0;
+
+        // Use MutationObserver to wait for actual content to render (async data load)
+        const observer = new MutationObserver(() => {
+            if (pendingScrollRef.current != null) {
+                wrapperEl.scrollTop = pendingScrollRef.current;
+                pendingScrollRef.current = null;
+                observer.disconnect();
+            }
+        });
+        observer.observe(wrapperEl, { childList: true, subtree: true });
+
+        // Fallback: disconnect after 3s to avoid leaks
+        const timeout = setTimeout(() => {
+            observer.disconnect();
+            pendingScrollRef.current = null;
+        }, 3000);
+
+        return () => {
+            observer.disconnect();
+            clearTimeout(timeout);
+        };
+    }, [activeWindowId, getActiveWindow]);
 
 
     return (
@@ -82,6 +137,17 @@ export default function Layout() {
                 ></div>
                 <div className="title">
                     {currentBookName} {chapter && `${chapter}장`}
+                </div>
+                <div
+                    className="btn multi-window"
+                    onClick={() => setIsTileOpen(!isTileOpen)}
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="2" y="2" width="9" height="9" rx="1" />
+                        <rect x="13" y="2" width="9" height="9" rx="1" />
+                        <rect x="2" y="13" width="9" height="9" rx="1" />
+                        <rect x="13" y="13" width="9" height="9" rx="1" />
+                    </svg>
                 </div>
                 <div
                     className="btn right"
@@ -120,7 +186,7 @@ export default function Layout() {
             </header>
 
             <div className="main" onClick={handleMainClick}>
-                <div className="wrapper">
+                <div className="wrapper" ref={wrapperRef}>
                     <Outlet context={{ settings }} />
                 </div>
             </div>
@@ -135,6 +201,12 @@ export default function Layout() {
             <RightSidebar
                 isOpen={isRightOpen}
                 onClose={() => setIsRightOpen(false)}
+            />
+
+            <TileManager
+                isOpen={isTileOpen}
+                onClose={() => setIsTileOpen(false)}
+                onSelectWindow={handleSelectWindow}
             />
         </>
     );
