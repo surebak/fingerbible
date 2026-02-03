@@ -12,6 +12,14 @@ function isInStandaloneMode() {
         navigator.standalone === true;
 }
 
+function isBannerDismissed() {
+    const dismissed = localStorage.getItem(DISMISS_KEY);
+    if (!dismissed) return false;
+    const dismissedAt = parseInt(dismissed, 10);
+    const daysPassed = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
+    return daysPassed < DISMISS_DAYS;
+}
+
 export default function InstallPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState(null);
     const [showBanner, setShowBanner] = useState(false);
@@ -21,30 +29,24 @@ export default function InstallPrompt() {
         // 이미 설치된 앱이면 표시하지 않음
         if (isInStandaloneMode()) return;
 
-        // 이전에 닫기한 경우 일정 기간 숨김
-        const dismissed = localStorage.getItem(DISMISS_KEY);
-        if (dismissed) {
-            const dismissedAt = parseInt(dismissed, 10);
-            const daysPassed = (Date.now() - dismissedAt) / (1000 * 60 * 60 * 24);
-            if (daysPassed < DISMISS_DAYS) return;
-        }
-
-        // iOS Safari 감지
-        if (isIOS()) {
-            setShowIOSGuide(true);
-            setShowBanner(true);
-            return;
-        }
-
-        // Android/Desktop Chrome - beforeinstallprompt 이벤트
+        // beforeinstallprompt 이벤트는 항상 캡처 (RightSidebar 등에서 사용)
         const handler = (e) => {
             e.preventDefault();
             setDeferredPrompt(e);
             window.deferredPrompt = e;
-            setShowBanner(true);
+            // 배너 표시 여부는 dismiss 상태에 따라 결정
+            if (!isBannerDismissed()) {
+                setShowBanner(true);
+            }
         };
 
         window.addEventListener("beforeinstallprompt", handler);
+
+        // iOS Safari 감지
+        if (isIOS() && !isBannerDismissed()) {
+            setShowIOSGuide(true);
+            setShowBanner(true);
+        }
 
         return () => {
             window.removeEventListener("beforeinstallprompt", handler);
