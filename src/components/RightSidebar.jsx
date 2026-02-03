@@ -17,9 +17,6 @@ export default function RightSidebar({ isOpen, onClose }) {
     };
 
     const handlePWAInstall = () => {
-        // If we have a stored prompt event, triggers it. 
-        // This requires global state usage or a context. 
-        // For now, we'll implement the UI.
         const promptEvent = window.deferredPrompt;
         if (promptEvent) {
             promptEvent.prompt();
@@ -29,8 +26,10 @@ export default function RightSidebar({ isOpen, onClose }) {
                 }
                 window.deferredPrompt = null;
             });
+        } else if (window.matchMedia('(display-mode: standalone)').matches || navigator.standalone) {
+            alert('이미 앱으로 설치되어 있습니다.');
         } else {
-            alert('설치 가능한 상태가 아닙니다. 브라우저 설정을 확인해주세요.');
+            alert('브라우저 주소표시줄의 설치 아이콘을 이용해주세요.');
         }
     };
 

@@ -40,6 +40,7 @@ export default function InstallPrompt() {
         const handler = (e) => {
             e.preventDefault();
             setDeferredPrompt(e);
+            window.deferredPrompt = e;
             setShowBanner(true);
         };
 
@@ -58,6 +59,7 @@ export default function InstallPrompt() {
             setShowBanner(false);
         }
         setDeferredPrompt(null);
+        window.deferredPrompt = null;
     };
 
     const handleDismiss = () => {
