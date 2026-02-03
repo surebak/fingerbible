@@ -1,7 +1,21 @@
+import { useState, useEffect } from 'react';
 import { useSettings } from '../hooks/useSettings';
 import { useNavigate, useParams } from 'react-router-dom';
 
+function isInstalledPWA() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+        navigator.standalone === true;
+}
+
 export default function RightSidebar({ isOpen, onClose }) {
+    const [installed, setInstalled] = useState(isInstalledPWA);
+
+    useEffect(() => {
+        const mql = window.matchMedia('(display-mode: standalone)');
+        const onChange = (e) => setInstalled(e.matches);
+        mql.addEventListener('change', onChange);
+        return () => mql.removeEventListener('change', onChange);
+    }, []);
     const { settings, updateSettings } = useSettings();
     const navigate = useNavigate();
     const { version, book, chapter } = useParams();
@@ -57,10 +71,12 @@ export default function RightSidebar({ isOpen, onClose }) {
                 색채
             </li>
 
-            <li className="install-menu" onClick={handlePWAInstall}>
-                <span className="install-icon">📱</span>
-                설치하기
-            </li>
+            {!installed && (
+                <li className="install-menu" onClick={handlePWAInstall}>
+                    <span className="install-icon">📱</span>
+                    설치하기
+                </li>
+            )}
         </div>
     );
 }
