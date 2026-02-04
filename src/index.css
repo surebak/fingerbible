@@ -77,6 +77,15 @@
   --color-scheme: #ff0044;
 }
 
+/* Hide Scrollbar */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+*::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 /* Base Reset */
 body,
 div,
